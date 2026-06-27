@@ -1,1 +1,181 @@
+{% extends 'portfolio/base.html' %}
 
+{% block content %}
+<style>
+    .hero {
+        background: linear-gradient(135deg, #0b3597, #1e6fcf);
+        border-radius: 24px;
+        padding: 70px 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 40px;
+        flex-wrap: wrap;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 60px;
+    }
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: -80px; right: -80px;
+        width: 300px; height: 300px;
+        background: rgba(99,212,255,0.1);
+        border-radius: 50%;
+    }
+    .hero::after {
+        content: '';
+        position: absolute;
+        bottom: -60px; left: -60px;
+        width: 200px; height: 200px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 50%;
+    }
+    .hero-text { flex: 1; min-width: 280px; position: relative; z-index: 1; }
+    .hero-text h4 { color: #63d4ff; font-size: 16px; font-weight: 400; letter-spacing: 2px; margin-bottom: 10px; }
+    .hero-text h1 { color: white; font-size: 52px; font-weight: 700; line-height: 1.2; }
+    .hero-text h1 span { color: #63d4ff; }
+    .hero-text p { color: #aac4e0; font-size: 16px; margin-top: 15px; line-height: 1.8; }
+    .typing-text { color: #63d4ff; font-weight: 600; border-right: 2px solid #63d4ff; animation: blink 0.7s infinite; }
+    @keyframes blink { 0%,100% { border-color: #63d4ff; } 50% { border-color: transparent; } }
+
+    .hero-btns { margin-top: 30px; display: flex; gap: 15px; flex-wrap: wrap; }
+    .btn-primary {
+        padding: 14px 32px;
+        background: #63d4ff;
+        color: #0a2463;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 15px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 5px 20px rgba(99,212,255,0.4);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(99,212,255,0.6); }
+    .btn-secondary {
+        padding: 14px 32px;
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 15px;
+        transition: transform 0.3s, background 0.3s;
+    }
+    .btn-secondary:hover { transform: translateY(-3px); background: white; color: #0a2463; }
+
+    .hero-avatar {
+        width: 220px; height: 220px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #63d4ff, #0a2463);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 90px;
+        box-shadow: 0 0 50px rgba(99,212,255,0.4);
+        flex-shrink: 0;
+        animation: float 4s ease-in-out infinite;
+        position: relative; z-index: 1;
+        border: 4px solid rgba(255,255,255,0.2);
+    }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+        margin-bottom: 60px;
+    }
+    .stat-card {
+        background: white;
+        border-radius: 16px;
+        padding: 30px 20px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: transform 0.3s;
+        border-bottom: 4px solid #1e6fcf;
+    }
+    .stat-card:hover { transform: translateY(-5px); }
+    .stat-card .icon { font-size: 36px; margin-bottom: 10px; }
+    .stat-card h2 { font-size: 36px; color: #0a2463; font-weight: 700; }
+    .stat-card p { color: #888; font-size: 13px; margin-top: 5px; }
+
+    .services-section { margin-bottom: 60px; }
+    .section-title { text-align: center; margin-bottom: 35px; }
+    .section-title h2 { font-size: 36px; color: #0a2463; font-weight: 700; }
+    .section-title h2 span { color: #1e6fcf; }
+    .section-title p { color: #888; font-size: 15px; margin-top: 8px; }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    .service-card {
+        background: white;
+        border-radius: 16px;
+        padding: 30px 20px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border-top: 4px solid #1e6fcf;
+    }
+    .service-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(30,111,207,0.2); }
+    .service-card .icon { font-size: 42px; margin-bottom: 15px; }
+    .service-card h3 { font-size: 16px; color: #0a2463; font-weight: 600; }
+    .service-card p { font-size: 13px; color: #888; margin-top: 8px; line-height: 1.6; }
+</style>
+
+<div class="hero">
+    <div class="hero-text">
+        <h4>👋 WELCOME TO MY PORTFOLIO</h4>
+        <h1>Hi, I'm <span>Bareera</span><br>Rafiq</h1>
+        <p>I'm a <span class="typing-text" id="typing"></span></p>
+        <p style="margin-top: 10px;"> 2023-2027  UMT Lahore, Pakistan</p>
+        
+    </div>
+    <div class="hero-avatar">
+            
+    </div>
+</div>
+
+    </div>
+<div class="stats">
+    <div class="stat-card">
+        <div class="icon">✅</div>
+        <h2>5+</h2>
+        <p>Projects Completed</p>
+    </div>
+    <div class="stat-card">
+        <div class="icon">⚡</div>
+        <h2>3</h2>
+        <p>Active Projects</p>
+    </div>
+    <div class="stat-card">
+        <div class="icon">💼</div>
+        <h2>1+</h2>
+        <p>Year Experience</p>
+    </div>
+    <div class="stat-card">
+        <div class="icon">🎓</div>
+        <h2>6th</h2>
+        <p>Semester BS CS</p>
+    </div>
+</div>
+
+
+<script>
+    const texts = ["CS Student 🎓", "Web Developer 💻", "Computer Vision Expert 🤖", "Digital Marketer 📈", "Problem Solver ⚡"];
+    let i = 0, j = 0, isDeleting = false;
+    function type() {
+        const el = document.getElementById('typing');
+        if (!el) return;
+        const current = texts[i];
+        if (isDeleting) { el.textContent = current.substring(0, j--); }
+        else { el.textContent = current.substring(0, j++); }
+        if (!isDeleting && j === current.length + 1) { isDeleting = true; setTimeout(type, 1500); return; }
+        if (isDeleting && j === 0) { isDeleting = false; i = (i + 1) % texts.length; }
+        setTimeout(type, isDeleting ? 50 : 100);
+    }
+    type();
+</script>
+{% endblock %}
