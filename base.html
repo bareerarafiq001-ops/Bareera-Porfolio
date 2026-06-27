@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bareera Rafiq | CS Student & Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #f5f8ff; color: #333; }
+
+        /* ===== NAVBAR ===== */
+        nav {
+            background: linear-gradient(135deg, #0a2463, #1e6fcf);
+            padding: 0 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 70px;
+            box-shadow: 0 4px 30px rgba(10,36,99,0.4);
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .nav-avatar {
+            width: 42px; height: 42px;
+            background: linear-gradient(135deg, #63d4ff, #1e6fcf);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+        .nav-brand-text h1 {
+            color: white;
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+        .nav-brand-text h1 span { color: #63d4ff; }
+        .nav-brand-text small {
+            color: #aac4e0;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .nav-links a {
+            color: #cce4ff;
+            text-decoration: none;
+            padding: 8px 14px;
+            font-size: 13.5px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .nav-links a:hover {
+            color: white;
+            background: rgba(255,255,255,0.12);
+            transform: translateY(-1px);
+        }
+        .nav-links .nav-search {
+            width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+            padding: 0;
+            border-radius: 10px;
+        }
+        .nav-links .nav-dashboard {
+            background: rgba(99,212,255,0.2);
+            color: white;
+            border: 1px solid rgba(99,212,255,0.3);
+        }
+        .nav-links .nav-dashboard:hover { background: rgba(99,212,255,0.35); }
+        .nav-links .nav-login {
+            background: linear-gradient(135deg, #63d4ff, #1e6fcf);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(99,212,255,0.3);
+        }
+        .nav-links .nav-login:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(99,212,255,0.4); }
+        .nav-links .nav-logout {
+            background: rgba(255,255,255,0.08);
+            color: #cce4ff;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        /* Mobile Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .hamburger span {
+            width: 25px; height: 2px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container { max-width: 1100px; margin: 50px auto; padding: 0 20px; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: linear-gradient(135deg, #0a2463, #0d1b45);
+            margin-top: 80px;
+            padding: 60px 60px 0;
+            box-shadow: 0 -10px 40px rgba(10,36,99,0.3);
+        }
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-brand h2 { color: white; font-size: 20px; font-weight: 700; }
+        .footer-brand h2 span { color: #63d4ff; }
+        .footer-brand .tagline { color: #63d4ff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; margin-bottom: 12px; }
+        .footer-brand p { color: #7a9cc0; font-size: 13px; line-height: 1.8; max-width: 270px; }
+
+        .social-links { display: flex; gap: 10px; margin-top: 18px; }
+        .social-btn {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none;
+            font-size: 15px;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+        .social-btn:hover { transform: translateY(-4px) scale(1.1); box-shadow: 0 10px 22px rgba(0,0,0,0.35); }
+        .instagram { background: linear-gradient(135deg, #f09433, #dc2743, #bc1888); }
+        .linkedin { background: #0077b5; }
+        .email-btn { background: #EA4335; }
+        .whatsapp { background: #25D366; }
+
+        .footer-col h4 { color: white; font-size: 14px; font-weight: 600; margin-bottom: 18px; padding-bottom: 10px; position: relative; }
+        .footer-col h4::after { content: ''; position: absolute; bottom: 0; left: 0; width: 28px; height: 2px; background: linear-gradient(90deg, #63d4ff, transparent); }
+        .footer-col a { display: flex; align-items: center; gap: 8px; color: #7a9cc0; text-decoration: none; font-size: 13px; margin-bottom: 10px; transition: all 0.3s; }
+        .footer-col a:hover { color: #63d4ff; padding-left: 5px; }
+        .footer-col a i { width: 14px; color: #63d4ff; font-size: 11px; }
+
+        .footer-contact-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: #7a9cc0; font-size: 13px; }
+        .footer-contact-item i { color: #63d4ff; width: 14px; }
+
+        .footer-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(99,212,255,0.25), transparent); margin-bottom: 22px; }
+        .footer-bottom { padding: 18px 0 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .footer-bottom p { font-size: 12px; color: #5a7a9a; }
+        .footer-bottom span { color: #63d4ff; }
+
+        @media (max-width: 900px) {
+            nav { padding: 0 20px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px; left: 0; right: 0;
+                background: linear-gradient(135deg, #0a2463, #1e6fcf);
+                flex-direction: column;
+                padding: 20px;
+                gap: 8px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            }
+            .nav-links.open { display: flex; }
+            .nav-links a { width: 100%; text-align: center; padding: 12px; }
+            .footer-top { grid-template-columns: 1fr; }
+            footer { padding: 40px 20px 0; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="{% url 'home' %}" class="nav-brand">
+        <div class="nav-avatar">BR</div>
+        <div class="nav-brand-text">
+            <h1>Bareera <span>Rafiq</span></h1>
+            <small>CS Student & Developer</small>
+        </div>
+    </a>
+
+    <div class="nav-links" id="navLinks">
+        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+        <a href="{% url 'about' %}"><i class="fas fa-user"></i> About</a>
+
+        <a href="{% url 'services' %}"><i class="fas fa-briefcase"></i> Services</a>
+        <a href="{% url 'contact' %}"><i class="fas fa-envelope"></i> Contact</a>
+       
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="nav-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="nav-login"><i class="fas fa-sign-in-alt"></i> Login</a>
+        {% endif %}
+    </div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</nav>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<footer>
+    <div class="footer-top">
+        <div class="footer-brand">
+            <h2>Bareera <span>Rafiq</span></h2>
+            <div class="tagline">CS Student & Developer</div>
+            <p>Passionate about Computer Vision, AI, Web Development and Digital Marketing. Always building, always learning.</p>
+            <div class="social-links">
+                <a href="https://wa.me/923039521050" target="_blank" class="social-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="mailto:bareerarafiq756@gmail.com" class="social-btn email-btn" title="Gmail"><i class="fas fa-envelope"></i></a>
+                <a href="https://www.linkedin.com/in/bareera-rafiq-066636366" target="_blank" class="social-btn linkedin" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.instagram.com/rbr.business" target="_blank" class="social-btn instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <a href="{% url 'home' %}"><i class="fas fa-chevron-right"></i> Home</a>
+            <a href="{% url 'about' %}"><i class="fas fa-chevron-right"></i> About Me</a>
+            <a href="{% url 'projects' %}"><i class="fas fa-chevron-right"></i> Projects</a>
+            <a href="{% url 'services' %}"><i class="fas fa-chevron-right"></i> Services</a>
+            <a href="{% url 'contact' %}"><i class="fas fa-chevron-right"></i> Contact</a>
+        </div>
+
+        <div class="footer-col">
+            <h4>Contact Info</h4>
+            <div class="footer-contact-item"><i class="fas fa-envelope"></i><span>bareerarafiq756@gmail.com</span></div>
+            <div class="footer-contact-item"><i class="fas fa-phone"></i><span>03039521050</span></div>
+            <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i><span>Lahore, Pakistan</span></div>
+            <div class="footer-contact-item"><i class="fas fa-university"></i><span>UMT Lahore</span></div>
+        </div>
+    </div>
+
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 <span>Bareera Rafiq</span> — All Rights Reserved</p>
+        <p>Made with <span>♥</span> rbr </p>
+    </div>
+</footer>
+
+<script>
+    function toggleMenu() {
+        document.getElementById('navLinks').classList.toggle('open');
+    }
+</script>
+
+</body>
+</html>

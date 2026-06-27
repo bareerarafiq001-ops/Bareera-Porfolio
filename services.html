@@ -1,0 +1,514 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+<style>
+    .services-hero {
+        background: linear-gradient(135deg, #0a2463, #1e6fcf);
+        border-radius: 24px;
+        padding: 55px;
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(10,36,99,0.3);
+    }
+    .services-hero::before {
+        content: '';
+        position: absolute;
+        top: -80px; right: -80px;
+        width: 280px; height: 280px;
+        background: rgba(99,212,255,0.08);
+        border-radius: 50%;
+    }
+    .services-hero h2 { color: white; font-size: 42px; font-weight: 700; position: relative; z-index: 1; text-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+    .services-hero h2 span { color: #63d4ff; }
+    .services-hero p { color: #aac4e0; font-size: 16px; margin-top: 12px; position: relative; z-index: 1; }
+
+    /* Services Grid */
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 60px;
+    }
+    .service-card {
+        background: white;
+        border-radius: 20px;
+        padding: 35px 25px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(10,36,99,0.1);
+        transition: transform 0.4s, box-shadow 0.4s;
+        border-bottom: 4px solid #1e6fcf;
+        transform: perspective(800px) rotateX(0deg);
+    }
+    .service-card:hover {
+        transform: perspective(800px) rotateX(4deg) translateY(-10px);
+        box-shadow: 0 25px 50px rgba(10,36,99,0.2);
+    }
+    .service-icon {
+        width: 70px; height: 70px;
+        background: linear-gradient(135deg, #0a2463, #1e6fcf);
+        border-radius: 20px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 30px;
+        margin: 0 auto 20px;
+        box-shadow: 0 8px 20px rgba(30,111,207,0.4);
+    }
+    .service-card h3 { font-size: 18px; color: #0a2463; font-weight: 700; }
+    .service-card p { color: #777; font-size: 14px; margin-top: 10px; line-height: 1.7; }
+    .service-price {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 6px 18px;
+        background: #e8f0fe;
+        color: #1e6fcf;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    /* Request Form */
+    .form-section {
+        background: white;
+        border-radius: 24px;
+        padding: 45px;
+        box-shadow: 0 20px 60px rgba(10,36,99,0.12);
+        margin-bottom: 50px;
+        transform: perspective(1000px) rotateY(0deg);
+        transition: transform 0.4s, box-shadow 0.4s;
+    }
+    .form-section:hover {
+        transform: perspective(1000px) rotateY(-1deg);
+        box-shadow: 0 30px 70px rgba(10,36,99,0.18);
+    }
+    .form-title { font-size: 28px; color: #0a2463; font-weight: 700; margin-bottom: 8px; }
+    .form-title span { color: #1e6fcf; }
+    .form-subtitle { color: #888; font-size: 14px; margin-bottom: 35px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #0a2463;
+        display: block;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid #e8f0fe;
+        border-radius: 12px;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s;
+        outline: none;
+        background: #f8faff;
+        color: #333;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: #1e6fcf;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(30,111,207,0.1);
+    }
+    .form-group textarea { resize: none; height: 120px; }
+
+    .submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #0a2463, #1e6fcf);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 8px 25px rgba(30,111,207,0.4);
+        letter-spacing: 0.5px;
+    }
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(30,111,207,0.5);
+    }
+
+    /* Chatbot */
+    .chatbot-section {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 999;
+    }
+    .chat-toggle {
+        width: 60px; height: 60px;
+        background: linear-gradient(135deg, #0a2463, #1e6fcf);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(30,111,207,0.5);
+        font-size: 26px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: none;
+        color: white;
+    }
+    .chat-toggle:hover {
+        transform: scale(1.1);
+        box-shadow: 0 12px 35px rgba(30,111,207,0.6);
+    }
+    .chat-window {
+        position: absolute;
+        bottom: 75px;
+        right: 0;
+        width: 330px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(10,36,99,0.2);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        border: 1px solid #e8f0fe;
+    }
+    .chat-window.open { display: flex; }
+    .chat-header {
+        background: linear-gradient(135deg, #0a2463, #1e6fcf);
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .chat-avatar {
+        width: 40px; height: 40px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px;
+    }
+    .chat-header-text h4 { color: white; font-size: 15px; font-weight: 600; }
+    .chat-header-text span { color: #aac4e0; font-size: 12px; }
+    .online-dot {
+        width: 8px; height: 8px;
+        background: #2ecc71;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 4px;
+        animation: blink 1.5s infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .chat-messages {
+        height: 280px;
+        overflow-y: auto;
+        padding: 20px;
+        background: #f8faff;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: #1e6fcf; border-radius: 4px; }
+
+    .msg {
+        max-width: 80%;
+        padding: 10px 14px;
+        border-radius: 14px;
+        font-size: 13px;
+        line-height: 1.5;
+        animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    .msg.bot {
+        background: white;
+        color: #333;
+        border-bottom-left-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        align-self: flex-start;
+    }
+    .msg.user {
+        background: linear-gradient(135deg, #0a2463, #1e6fcf);
+        color: white;
+        border-bottom-right-radius: 4px;
+        align-self: flex-end;
+    }
+    .typing {
+        display: flex; gap: 4px; align-items: center;
+        background: white;
+        padding: 12px 16px;
+        border-radius: 14px;
+        width: fit-content;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .typing span {
+        width: 8px; height: 8px;
+        background: #1e6fcf;
+        border-radius: 50%;
+        animation: bounce 1.2s infinite;
+    }
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+    .quick-replies {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 10px 20px;
+        background: #f8faff;
+        border-top: 1px solid #e8f0fe;
+    }
+    .quick-btn {
+        padding: 6px 12px;
+        background: #e8f0fe;
+        color: #0a2463;
+        border: none;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s;
+    }
+    .quick-btn:hover { background: #1e6fcf; color: white; }
+
+    .chat-input {
+        display: flex;
+        padding: 15px;
+        gap: 10px;
+        border-top: 1px solid #e8f0fe;
+        background: white;
+    }
+    .chat-input input {
+        flex: 1;
+        padding: 10px 14px;
+        border: 2px solid #e8f0fe;
+        border-radius: 25px;
+        font-size: 13px;
+        font-family: 'Poppins', sans-serif;
+        outline: none;
+        transition: border 0.3s;
+    }
+    .chat-input input:focus { border-color: #1e6fcf; }
+    .send-btn {
+        width: 40px; height: 40px;
+        background: linear-gradient(135deg, #0a2463, #1e6fcf);
+        border: none;
+        border-radius: 50%;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+        display: flex; align-items: center; justify-content: center;
+        transition: transform 0.3s;
+        flex-shrink: 0;
+    }
+    .send-btn:hover { transform: scale(1.1); }
+
+    @media (max-width: 768px) {
+        .form-row { grid-template-columns: 1fr; }
+        .chat-window { width: 290px; }
+    }
+</style>
+
+<!-- Hero -->
+<div class="services-hero">
+    <h2>My <span>Services</span> </h2>
+    <p>Professional services I offer, let's build something great together!</p>
+</div>
+
+<!-- Services Cards -->
+<div class="services-grid">
+    <div class="service-card">
+        <div class="service-icon">🌐</div>
+        <h3>Web Development</h3>
+        <p>Modern websites using Django, HTML, CSS & JavaScript with full backend functionality.</p>
+        <span class="service-price">Starting from 5,000 PKR</span>
+    </div>
+    <div class="service-card">
+        <div class="service-icon">🎨</div>
+        <h3>Designing & Canva</h3>
+        <p>Creative social media posts, branding kits, flyers and professional designs.</p>
+        <span class="service-price">Starting from 1,500 PKR</span>
+    </div>
+    <div class="service-card">
+        <div class="service-icon">🤖</div>
+        <h3>AI & Computer Vision</h3>
+        <p>Custom AI/ML solutions, image processing, object detection and automation.</p>
+        <span class="service-price">Starting from 10,000 PKR</span>
+    </div>
+    <div class="service-card">
+        <div class="service-icon">📈</div>
+        <h3>Digital Marketing</h3>
+        <p>LinkedIn & Instagram outreach, B2B lead generation and social media campaigns.</p>
+        <span class="service-price">Starting from 3,000 PKR</span>
+    </div>
+    <div class="service-card">
+        <div class="service-icon">📚</div>
+        <h3>eBook Writing</h3>
+        <p>Professional eBook writing, formatting and publishing on digital platforms.</p>
+        <span class="service-price">Starting from 2,000 PKR</span>
+    </div>
+    <div class="service-card">
+        <div class="service-icon">🚛</div>
+        <h3>Truck Dispatch Training</h3>
+        <p>Complete truck dispatch training, campaign management and carrier outreach.</p>
+        <span class="service-price">Starting from 5,000 PKR</span>
+    </div>
+</div>
+
+<!-- Request Form -->
+<div class="form-section">
+    <div class="form-title">Request a <span>Service</span> 💼</div>
+    <div class="form-subtitle">Fill out the form below and I will get back to you within 24 hours!</div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group">
+                <label>Full Name</label>
+                {{ form.name }}
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                {{ form.email }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Phone Number</label>
+                {{ form.phone }}
+            </div>
+            <div class="form-group">
+                <label>Select Service</label>
+                {{ form.service }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Your Budget</label>
+            {{ form.budget }}
+        </div>
+        <div class="form-group">
+            <label>Project Description</label>
+            {{ form.description }}
+        </div>
+        <button type="submit" class="submit-btn">
+            Submit Request &nbsp; <i class="fas fa-paper-plane"></i>
+        </button>
+    </form>
+</div>
+
+<!-- AI Chatbot -->
+<div class="chatbot-section">
+    <button class="chat-toggle" onclick="toggleChat()">💬</button>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <div class="chat-avatar">👩‍💻</div>
+            <div class="chat-header-text">
+                <h4>Bareera's Assistant</h4>
+                <span><span class="online-dot"></span>Online — AI Powered</span>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="quick-replies">
+            <button class="quick-btn" onclick="quickReply('Services')">🚀 Services</button>
+            <button class="quick-btn" onclick="quickReply('Pricing')">💰 Pricing</button>
+            <button class="quick-btn" onclick="quickReply('Contact')">📞 Contact</button>
+            <button class="quick-btn" onclick="quickReply('Projects')">💻 Projects</button>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="handleKey(event)">
+            <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let chatOpen = false;
+    let firstOpen = true;
+
+    function toggleChat() {
+        chatOpen = !chatOpen;
+        const win = document.getElementById('chatWindow');
+        win.classList.toggle('open', chatOpen);
+        if (firstOpen && chatOpen) {
+            firstOpen = false;
+            setTimeout(() => botMessage("Hi! 👋 I'm Bareera's AI Assistant. How can I help you today?"), 500);
+            setTimeout(() => botMessage("You can ask me about Services, Pricing, Projects, or how to Contact Bareera! 😊"), 1500);
+        }
+    }
+
+    function botMessage(text) {
+        const msgs = document.getElementById('chatMessages');
+        const typing = document.createElement('div');
+        typing.className = 'typing';
+        typing.innerHTML = '<span></span><span></span><span></span>';
+        msgs.appendChild(typing);
+        msgs.scrollTop = msgs.scrollHeight;
+        setTimeout(() => {
+            msgs.removeChild(typing);
+            const msg = document.createElement('div');
+            msg.className = 'msg bot';
+            msg.textContent = text;
+            msgs.appendChild(msg);
+            msgs.scrollTop = msgs.scrollHeight;
+        }, 1000);
+    }
+
+    function userMessage(text) {
+        const msgs = document.getElementById('chatMessages');
+        const msg = document.createElement('div');
+        msg.className = 'msg user';
+        msg.textContent = text;
+        msgs.appendChild(msg);
+        msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function getResponse(input) {
+        const msg = input.toLowerCase();
+        if (msg.includes('service') || msg.includes('offer') || msg.includes('kya krti'))
+            return "I offer: 🌐 Web Development, 🎨 Designing, 🤖 AI & Computer Vision, 📈 Digital Marketing, 📚 eBook Writing, 🚛 Truck Dispatch Training!";
+        if (msg.includes('price') || msg.includes('cost') || msg.includes('budget') || msg.includes('kitna'))
+            return "Prices start from 1,500 PKR for designing, 5,000 PKR for web development, and 10,000 PKR for AI projects. Fill the request form for a custom quote! 💰";
+        if (msg.includes('contact') || msg.includes('reach') || msg.includes('phone') || msg.includes('email'))
+            return "You can reach Bareera at:\n📧 bareerarafiq756@gmail.com\n📞 03039521050\n💼 LinkedIn: bareera-rafiq-066636366";
+        if (msg.includes('project') || msg.includes('work') || msg.includes('portfolio'))
+            return "Bareera has completed 5+ projects including Vehicle Number Plate Recognition (98% accuracy), Django Portfolio, LinkedIn B2B Lead Generation, and more! 🚀";
+        if (msg.includes('who') || msg.includes('bareera') || msg.includes('about'))
+            return "Bareera Rafiq is a 7th semester BS CS student at UMT Lahore with expertise in Computer Vision, AI, Web Development and Digital Marketing! 👩‍💻";
+        if (msg.includes('hi') || msg.includes('hello') || msg.includes('hey') || msg.includes('salam'))
+            return "Hi there! 👋 Welcome to Bareera's portfolio! How can I assist you today?";
+        if (msg.includes('instagram') || msg.includes('linkedin') || msg.includes('social'))
+            return "Find Bareera on:\n📸 Instagram: @rbr.business\n💼 LinkedIn: bareera-rafiq-066636366";
+        if (msg.includes('web') || msg.includes('website') || msg.includes('django'))
+            return "Bareera builds modern websites using Django, Python, HTML, CSS & JavaScript. Starting from 5,000 PKR! 🌐";
+        if (msg.includes('ai') || msg.includes('computer vision') || msg.includes('machine learning'))
+            return "Bareera specializes in AI & Computer Vision using YOLOv8, OpenCV, Python and more. She achieved 98% accuracy in her VNPR project! 🤖";
+        if (msg.includes('thank') || msg.includes('thanks') || msg.includes('shukriya'))
+            return "You're welcome! 😊 Feel free to ask anything else or fill the service request form above!";
+        return "That's a great question! 😊 For more details, please contact Bareera directly at bareerarafiq756@gmail.com or fill the service request form above!";
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text) return;
+        userMessage(text);
+        input.value = '';
+        setTimeout(() => botMessage(getResponse(text)), 500);
+    }
+
+    function quickReply(text) {
+        userMessage(text);
+        setTimeout(() => botMessage(getResponse(text)), 500);
+    }
+
+    function handleKey(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+</script>
+
+{% endblock %}

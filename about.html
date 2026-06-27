@@ -1,0 +1,409 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .about-hero {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 50px;
+        margin-bottom: 60px;
+        align-items: center;
+    }
+    .profile-side { position: relative; display: flex; justify-content: center; }
+    .profile-frame {
+        width: 300px;
+        height: 350px;
+        border-radius: 30px;
+        position: relative;
+    }
+    .profile-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        border-radius: 30px;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 30px 70px rgba(10,36,99,0.25);
+        display: block;
+    }
+    .profile-frame::before {
+        content: '';
+        position: absolute;
+        top: -12px; left: -12px;
+        width: 100%; height: 100%;
+        background: linear-gradient(135deg, #63d4ff, #1e6fcf);
+        border-radius: 30px;
+        z-index: 1;
+    }
+    .profile-frame::after {
+        content: '';
+        position: absolute;
+        bottom: -12px; right: -12px;
+        width: 100%; height: 100%;
+        background: linear-gradient(135deg, #0a2463, #1e6fcf);
+        border-radius: 30px;
+        z-index: 0;
+        opacity: 0.2;
+    }
+    .floating-badge {
+        position: absolute;
+        background: white;
+        border-radius: 14px;
+        padding: 10px 16px;
+        box-shadow: 0 8px 25px rgba(10,36,99,0.15);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        z-index: 10;
+        animation: float 3s ease-in-out infinite;
+    }
+    .floating-badge p { font-size: 12px; font-weight: 700; color: #0a2463; margin: 0; }
+    .floating-badge small { font-size: 11px; color: #888; }
+    .badge-1 { top: -15px; right: -25px; animation-delay: 0s; }
+    .badge-2 { bottom: 30px; left: -35px; animation-delay: 1.5s; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+    .about-text h4 { color: #1e6fcf; font-size: 13px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
+    .about-text h1 { font-size: 40px; color: #0a2463; font-weight: 700; line-height: 1.2; }
+    .about-text h1 span { color: #1e6fcf; }
+    .about-text p { color: #666; font-size: 15px; line-height: 1.9; margin-top: 18px; }
+
+    .info-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    .pill {
+        display: flex; align-items: center; gap: 8px;
+        background: #f0f5ff;
+        padding: 9px 16px;
+        border-radius: 25px;
+        font-size: 13px;
+        color: #0a2463;
+        font-weight: 500;
+        border: 1px solid #dce8ff;
+        transition: all 0.3s;
+    }
+    .pill:hover { background: #0a2463; color: white; transform: translateY(-2px); }
+    .pill i { color: #1e6fcf; font-size: 13px; }
+    .pill:hover i { color: #63d4ff; }
+
+    /* Social Contact Buttons */
+    .social-contact { display: flex; gap: 12px; margin-top: 25px; flex-wrap: wrap; }
+    .s-contact-btn {
+        width: 48px; height: 48px;
+        border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px;
+        text-decoration: none;
+        color: white;
+        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .s-contact-btn:hover { transform: translateY(-5px) scale(1.1); box-shadow: 0 12px 25px rgba(0,0,0,0.3); }
+    .btn-whatsapp { background: #25D366; }
+    .btn-gmail { background: #EA4335; }
+    .btn-linkedin { background: #0077b5; }
+    .btn-instagram { background: linear-gradient(135deg, #f09433, #dc2743, #bc1888); }
+
+    /* Stats */
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 60px;
+    }
+    .stat-box {
+        background: white;
+        border-radius: 20px;
+        padding: 28px 20px;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(10,36,99,0.08);
+        border-bottom: 4px solid #1e6fcf;
+        transition: transform 0.4s;
+        transform: perspective(600px) rotateX(0deg);
+    }
+    .stat-box:hover { transform: perspective(600px) rotateX(6deg) translateY(-5px); }
+    .stat-box h2 { font-size: 36px; color: #0a2463; font-weight: 700; }
+    .stat-box p { color: #888; font-size: 12px; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* Skills */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 60px; }
+    .card-box {
+        background: white;
+        border-radius: 20px;
+        padding: 35px;
+        box-shadow: 0 8px 25px rgba(10,36,99,0.08);
+        transition: transform 0.4s, box-shadow 0.4s;
+        transform: perspective(800px) rotateY(0deg);
+    }
+    .card-box:hover {
+        transform: perspective(800px) rotateY(-3deg) translateY(-5px);
+        box-shadow: 0 20px 50px rgba(10,36,99,0.15);
+    }
+    .card-box h3 { font-size: 18px; color: #0a2463; font-weight: 700; margin-bottom: 25px; }
+
+    .skill-item { margin-bottom: 18px; }
+    .skill-label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #0a2463; margin-bottom: 8px; }
+    .skill-bar { background: #e8f0fe; border-radius: 10px; height: 8px; overflow: hidden; }
+    .skill-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, #0a2463, #63d4ff); animation: fillBar 2s ease forwards; width: 0%; }
+    @keyframes fillBar { to { width: var(--w); } }
+
+    /* Courses */
+    .section-heading { font-size: 26px; color: #0a2463; font-weight: 700; margin-bottom: 25px; }
+    .section-heading span { color: #1e6fcf; }
+
+    .courses-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 60px;
+    }
+    .course-pill {
+        background: white;
+        border-radius: 12px;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 15px rgba(10,36,99,0.07);
+        border-left: 4px solid #1e6fcf;
+        transition: transform 0.3s;
+        font-size: 13px;
+        color: #333;
+        font-weight: 500;
+    }
+    .course-pill:hover { transform: translateX(5px); }
+    .course-pill i { color: #1e6fcf; font-size: 13px; }
+
+    /* Experience */
+    .exp-timeline { margin-bottom: 60px; position: relative; }
+    .exp-timeline::before {
+        content: '';
+        position: absolute;
+        left: 22px; top: 0; bottom: 0;
+        width: 2px;
+        background: linear-gradient(180deg, #1e6fcf, #63d4ff);
+    }
+    .exp-item { display: flex; gap: 25px; margin-bottom: 25px; }
+    .exp-dot {
+        width: 46px; height: 46px;
+        background: linear-gradient(135deg, #0a2463, #1e6fcf);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+        box-shadow: 0 5px 15px rgba(30,111,207,0.4);
+        z-index: 1;
+    }
+    .exp-content {
+        background: white;
+        border-radius: 16px;
+        padding: 20px 25px;
+        flex: 1;
+        box-shadow: 0 5px 20px rgba(10,36,99,0.08);
+        transition: transform 0.3s;
+    }
+    .exp-content:hover { transform: translateX(5px); }
+    .exp-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .exp-header h3 { font-size: 15px; color: #0a2463; font-weight: 700; }
+    .exp-badge { background: #e8f0fe; color: #1e6fcf; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .exp-content p { color: #777; font-size: 13px; margin-top: 8px; line-height: 1.7; }
+
+    /* Goal */
+    .goal-card {
+        background: linear-gradient(135deg, #0a2463, #1e6fcf);
+        border-radius: 24px;
+        padding: 50px;
+        text-align: center;
+        margin-bottom: 60px;
+        box-shadow: 0 20px 60px rgba(10,36,99,0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    .goal-card::before { content: '🎯'; position: absolute; font-size: 200px; opacity: 0.04; top: -30px; right: -30px; }
+    .goal-card h2 { color: white; font-size: 30px; font-weight: 700; }
+    .goal-card h2 span { color: #63d4ff; }
+    .goal-card p { color: #aac4e0; font-size: 15px; margin-top: 15px; line-height: 1.9; max-width: 700px; margin-left: auto; margin-right: auto; }
+    .goal-steps { display: flex; justify-content: center; gap: 20px; margin-top: 35px; flex-wrap: wrap; }
+    .goal-step {
+        background: rgba(255,255,255,0.1);
+        border-radius: 16px;
+        padding: 22px 25px;
+        min-width: 130px;
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: transform 0.3s;
+    }
+    .goal-step:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); }
+    .goal-step .step-icon { font-size: 30px; margin-bottom: 10px; }
+    .goal-step p { color: white; font-size: 12px; font-weight: 600; margin: 0; }
+
+    @media (max-width: 768px) {
+        .about-hero { grid-template-columns: 1fr; }
+        .profile-frame { width: 250px; height: 300px; }
+        .stats-row { grid-template-columns: repeat(2, 1fr); }
+        .two-col { grid-template-columns: 1fr; }
+        .courses-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+</style>
+
+<!-- Hero -->
+<div class="about-hero">
+    <div class="profile-side">
+        <div class="profile-frame">
+            <img src="{% static 'images/WhatsApp Image 2026-06-27 at 7.09.06 AM.jpeg' %}" alt="Bareera Rafiq">
+            
+        </div>
+    </div>
+    <div class="about-text">
+        <h4> My name is </h4>
+        <h1>Bareera <span>Rafiq</span></h1>
+        <p>A passionate CS student at UMT Lahore . I build intelligent systems, modern websites, and creative digital products. Always learning, always building!</p>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+    <div class="stat-box"><h2>8+</h2><p>Total Projects</p></div>
+    <div class="stat-box"><h2>3</h2><p>Active Projects</p></div>
+    <div class="stat-box"><h2>1+</h2><p>Year Experience</p></div>
+    <div class="stat-box"><h2>6th</h2><p>6th Semester </p></div>
+</div>
+
+<!-- Skills -->
+<div class="two-col">
+    <div class="card-box">
+        <h3>💡 Technical Skills</h3>
+        <div class="skill-item">
+            <div class="skill-label"><span>Python </span><span>85%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:85%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Computer Vision & AI</span><span>88%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:88%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>HTML / CSS / JavaScript</span><span>80%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:80%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>C++ & OOP</span><span>75%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:75%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Data Science & ML</span><span>78%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:78%"></div></div>
+        </div>
+    </div>
+    <div class="card-box">
+        <h3>🎯 Professional Skills</h3>
+        <div class="skill-item">
+            <div class="skill-label"><span>Canva Designing</span><span>92%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:92%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Digital Marketing</span><span>85%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:85%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Sales & Cold Calling</span><span>88%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:88%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>eBook Writing</span><span>80%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:80%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Website Development</span><span>82%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:82%"></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- Courses -->
+<div class="section-heading">CS Degree <span>Courses</span> 📚</div>
+<div class="courses-grid">
+    <div class="course-pill"><i class="fas fa-code"></i> C++ Programming</div>
+    <div class="course-pill"><i class="fas fa-layer-group"></i> Object Oriented Programming</div>
+    <div class="course-pill"><i class="fas fa-database"></i> Data Structures</div>
+    <div class="course-pill"><i class="fas fa-server"></i> Database Systems</div>
+    <div class="course-pill"><i class="fas fa-chart-line"></i> Analysis of Algorithms</div>
+    <div class="course-pill"><i class="fas fa-image"></i> Digital Image Processing</div>
+    <div class="course-pill"><i class="fas fa-eye"></i> Computer Vision</div>
+    <div class="course-pill"><i class="fas fa-brain"></i> Artificial Intelligence</div>
+    <div class="course-pill"><i class="fas fa-robot"></i> Data Science</div>
+    <div class="course-pill"><i class="fas fa-microchip"></i> Theory of Automata</div>
+    <div class="course-pill"><i class="fas fa-terminal"></i> Compiler Construction</div>
+    <div class="course-pill"><i class="fas fa-globe"></i> Web Technologies</div>
+</div>
+
+<!-- Experience -->
+<div class="section-heading">My <span>Experience</span> 💼</div>
+<div class="exp-timeline">
+    <div class="exp-item">
+        <div class="exp-dot">💼</div>
+        <div class="exp-content">
+            <div class="exp-header">
+                <h3>Sales Person & Cold Caller</h3>
+                <span class="exp-badge">1+ Year</span>
+            </div>
+            <p>Handled client outreach, cold calling, Medicare inbound calls, and truck dispatch campaigns with strong communication skills.</p>
+        </div>
+    </div>
+    <div class="exp-item">
+        <div class="exp-dot">🤖</div>
+        <div class="exp-content">
+            <div class="exp-header">
+                <h3>AI & Computer Vision Developer</h3>
+                <span class="exp-badge">Projects</span>
+            </div>
+            <p>Built Vehicle Number Plate Recognition using YOLOv8 & EasyOCR. 
+                Developing AI-powered solutions through advanced computer vision techniques.</p>
+        </div>
+    </div>
+    <div class="exp-item">
+        <div class="exp-dot">🌐</div>
+        <div class="exp-content">
+            <div class="exp-header">
+                <h3>Web Developer</h3>
+                <span class="exp-badge">Freelance</span>
+            </div>
+            <p>Building modern, professional websites using Django, Python, HTML, CSS and JavaScript for clients and personal projects.</p>
+        </div>
+    </div>
+    <div class="exp-item">
+        <div class="exp-dot">🎨</div>
+        <div class="exp-content">
+            <div class="exp-header">
+                <h3>Canva Designer & eBook Writer</h3>
+                <span class="exp-badge">Freelance</span>
+            </div>
+            <p>Creating professional designs, social media content, and publishing digital eBooks 
+                on Gumroad promoted via Instagram and Pinterest.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Future Goal -->
+<div class="goal-card">
+    <h2>My Future <span>Goal</span> 🎯</h2>
+    <p>My goal is to become a full-stack tech professional providing complete services in Web Development, AI/Computer Vision, Digital Marketing, and Designing. I want to build my own tech services business and help clients grow through innovative solutions.</p>
+    <div class="goal-steps">
+        <div class="goal-step">
+            <div class="step-icon">🎓</div>
+            <p>Degree complete</p>
+        </div>
+        <div class="goal-step">
+            <div class="step-icon">💻</div>
+            <p>Launch Tech Business</p>
+        </div>
+        <div class="goal-step">
+            <div class="step-icon">🤖</div>
+            <p>Specialize in AI & CV</p>
+        </div>
+        <div class="goal-step">
+            <div class="step-icon">🌍</div>
+            <p> Reach Global Clients and Provide solutions</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

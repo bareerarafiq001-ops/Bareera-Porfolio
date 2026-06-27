@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bareera Rafiq | CS Student & Developer</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Poppins',sans-serif;
+            background:#f5f8ff;
+            color:#333;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav{
+            background:linear-gradient(135deg,#0a2463,#1e6fcf);
+            height:70px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:0 60px;
+            position:sticky;
+            top:0;
+            z-index:100;
+            box-shadow:0 4px 30px rgba(10,36,99,.35);
+        }
+
+        .nav-brand h1{
+            color:#fff;
+            font-size:22px;
+            font-weight:700;
+        }
+
+        .nav-brand span{
+            color:#63d4ff;
+        }
+
+        .nav-brand small{
+            color:#b7d4f5;
+            letter-spacing:2px;
+            text-transform:uppercase;
+            font-size:11px;
+        }
+
+        .nav-links{
+            display:flex;
+            gap:8px;
+        }
+
+        .nav-links a{
+            color:#fff;
+            text-decoration:none;
+            padding:10px 18px;
+            border-radius:8px;
+            transition:.3s;
+        }
+
+        .nav-links a:hover{
+            background:rgba(255,255,255,.15);
+        }
+
+        /* ================= CONTENT ================= */
+
+        .container{
+            max-width:1100px;
+            margin:50px auto;
+            padding:0 20px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer{
+            margin-top:80px;
+            background:linear-gradient(135deg,#0a2463,#091a45);
+            color:#fff;
+            padding:60px 60px 20px;
+        }
+
+        .footer-top{
+            display:grid;
+            grid-template-columns:2fr 1fr 1fr;
+            gap:50px;
+        }
+
+        .footer-brand h2{
+            font-size:26px;
+            margin-bottom:5px;
+        }
+
+        .footer-brand h2 span{
+            color:#63d4ff;
+        }
+
+        .tagline{
+            color:#63d4ff;
+            text-transform:uppercase;
+            letter-spacing:2px;
+            font-size:12px;
+            margin-bottom:20px;
+        }
+
+        .footer-brand p{
+            color:#b6c6dc;
+            line-height:1.8;
+            max-width:320px;
+        }
+
+        /* ================= SOCIAL ICONS ================= */
+
+        .social-links{
+            display:flex;
+            gap:15px;
+            margin-top:25px;
+        }
+
+        .social-btn{
+            width:48px;
+            height:48px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            border-radius:12px;
+            text-decoration:none;
+            color:#fff;
+            font-size:20px;
+            transition:.35s;
+            box-shadow:0 8px 20px rgba(0,0,0,.3);
+        }
+
+        .social-btn:hover{
+            transform:translateY(-6px) scale(1.1);
+            box-shadow:0 12px 25px rgba(0,0,0,.4);
+        }
+
+        .whatsapp{
+            background:#25D366;
+        }
+
+        .email-btn{
+            background:#4285F4;
+        }
+
+        .instagram{
+            background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+        }
+
+        .linkedin{
+            background:#0077b5;
+        }
+
+        /* ================= FOOTER COLUMNS ================= */
+
+        .footer-col h4{
+            margin-bottom:20px;
+            font-size:18px;
+        }
+
+        .footer-col a{
+            display:block;
+            color:#b6c6dc;
+            text-decoration:none;
+            margin-bottom:12px;
+            transition:.3s;
+        }
+
+        .footer-col a:hover{
+            color:#63d4ff;
+            padding-left:5px;
+        }
+
+        .footer-contact-item{
+            margin-bottom:15px;
+            color:#b6c6dc;
+        }
+
+        .footer-contact-item i{
+            color:#63d4ff;
+            width:25px;
+        }
+
+        .footer-divider{
+            height:1px;
+            background:#294b88;
+            margin:40px 0 20px;
+        }
+
+        .footer-bottom{
+            display:flex;
+            justify-content:space-between;
+            flex-wrap:wrap;
+        }
+
+        .footer-bottom span{
+            color:#63d4ff;
+        }
+
+        @media(max-width:768px){
+
+            nav{
+                padding:0 20px;
+                flex-direction:column;
+                height:auto;
+                padding-top:15px;
+                padding-bottom:15px;
+            }
+
+            .nav-links{
+                margin-top:15px;
+                flex-wrap:wrap;
+                justify-content:center;
+            }
+
+            .footer-top{
+                grid-template-columns:1fr;
+            }
+
+            footer{
+                padding:40px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+<body>
+
+<nav>
+
+    <div class="nav-brand">
+        <h1>Bareera <span>Rafiq</span></h1>
+        <small>CS Student & Developer</small>
+    </div>
+
+   <div class="nav-links" id="navLinks">
+        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+        <a href="{% url 'about' %}"><i class="fas fa-user"></i> About</a>
+
+        <a href="{% url 'services' %}"><i class="fas fa-briefcase"></i> Services</a>
+        <a href="{% url 'contact' %}"><i class="fas fa-envelope"></i> Contact</a>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="nav-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="nav-login"><i class="fas fa-sign-in-alt"></i> Login</a>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="container">
+
+{% block content %}
+
+{% endblock %}
+
+</div>
+
+<footer>
+
+<div class="footer-top">
+
+<div class="footer-brand">
+
+<h2>Bareera <span>Rafiq</span></h2>
+
+<div class="tagline">
+CS Student & Developer
+</div>
+
+<p>
+Passionate about Computer Vision, Artificial Intelligence,
+Web Development and Digital Marketing.
+Always building, always learning.
+</p>
+
+<div class="social-links">
+
+<!-- WhatsApp -->
+<a href="https://wa.me/923039521050"
+class="social-btn whatsapp"
+target="_blank"
+title="WhatsApp">
+<i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- Email -->
+<a href="mailto:bareerarafiq756@gmail.com"
+class="social-btn email-btn"
+title="Email">
+<i class="fas fa-envelope"></i>
+</a>
+
+<!-- Instagram -->
+<a href="https://www.instagram.com/rbr.business"
+class="social-btn instagram"
+target="_blank"
+title="Instagram">
+<i class="fab fa-instagram"></i>
+</a>
+
+<!-- LinkedIn -->
+<a href="https://www.linkedin.com/in/bareera-rafiq-066636366"
+class="social-btn linkedin"
+target="_blank"
+title="LinkedIn">
+<i class="fab fa-linkedin-in"></i>
+</a>
+
+</div>
+
+</div>
+
+<div class="footer-col">
+
+<h4>Quick Links</h4>
+
+<a href="{% url 'home' %}">
+<i class="fas fa-chevron-right"></i>
+Home
+</a>
+
+<a href="{% url 'about' %}">
+<i class="fas fa-chevron-right"></i>
+About Me
+</a>
+
+<a href="{% url 'projects' %}">
+<i class="fas fa-chevron-right"></i>
+Projects
+</a>
+
+<a href="{% url 'contact' %}">
+<i class="fas fa-chevron-right"></i>
+Contact
+</a>
+
+</div>
+
+<div class="footer-col">
+
+<h4>Contact Info</h4>
+
+<div class="footer-contact-item">
+<i class="fas fa-phone"></i>
++92 303 9521050
+</div>
+
+<div class="footer-contact-item">
+<i class="fas fa-envelope"></i>
+bareerarafiq756@gmail.com
+</div>
+
+<div class="footer-contact-item">
+<i class="fas fa-map-marker-alt"></i>
+Lahore, Pakistan
+</div>
+
+<div class="footer-contact-item">
+<i class="fas fa-university"></i>
+UMT Lahore
+</div>
+
+</div>
+
+</div>
+
+<div class="footer-divider"></div>
+
+<div class="footer-bottom">
+
+<p>
+© 2026 <span>Bareera Rafiq</span>. All Rights Reserved.
+</p>
+
+<p>
+Made with <span>❤</span> by rbr.
+</p>
+
+</div>
+
+</footer>
+
+</body>
+</html>
